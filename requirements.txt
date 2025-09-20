@@ -1,5 +1,5 @@
 pymupdf
-google_cloud_aiplatform==1.71.1 protobuf==5.29.5
+google_cloud_aiplatform==1.71.1
 audio_recorder_streamlit
 numpy
 pandas
