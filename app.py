@@ -25,13 +25,13 @@ from audio_recorder_streamlit import audio_recorder
 # Define variables
 PROJECT_ID = "aichatbot09192025" # "walmart-rag-poc"
 LOCATION = "us-central1"
-CRED_FILE_PATH = 'poc_env_key.json'
-METADATA_FILE_DIR = 'embeddings.pkl'
-PDF_FOLDER_PATH = 'data' # folder to store uploaded files for RAG
-IMAGE_SAVE_DIR = 'images' # folder to store extracted images
-CHAT_HISTORY_FILE = 'chat_history.json' # file name to store chat history
-BACKGROUND_IMAGE_PATH = 'background.jpg'  # chatbot background image
-LOGO_IMAGE_PATH = 'logo.png'  # chatbot logo
+CRED_FILE_PATH = '/home/bhagatabhi718/aichatbot_09192025/poc_env_key.json'
+METADATA_FILE_DIR = '/home/bhagatabhi718/aichatbot_09192025/embeddings.pkl'
+PDF_FOLDER_PATH = '/home/bhagatabhi718/aichatbot_09192025/data' # folder to store uploaded files for RAG
+IMAGE_SAVE_DIR = '/home/bhagatabhi718/aichatbot_09192025/images' # folder to store extracted images
+CHAT_HISTORY_FILE = '/home/bhagatabhi718/aichatbot_09192025/chat_history.json' # file name to store chat history
+BACKGROUND_IMAGE_PATH = '/home/bhagatabhi718/aichatbot_09192025/background.jpg'  # chatbot background image
+LOGO_IMAGE_PATH = '/home/bhagatabhi718/aichatbot_09192025/logo.png'  # chatbot logo
 LLM_TEMPERATURE = 1 # lower means more deterministic and higher means less deterministic
 LLM_MAX_OUTPUT_TOKENS = 8192
 MULTIMODAL_MODEL = "gemini-2.5-pro"
