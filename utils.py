@@ -756,7 +756,14 @@ def get_similar_image_from_query(
 
     # Create a dictionary to store matched images and their information
     final_images: Dict[int, Dict[str, Any]] = {}
-
+    # With this cross-platform solution:
+    img_path = image_metadata_df.iloc[indexvalue]["img_path"]
+    # Convert Windows paths to Unix paths
+    img_path = img_path.replace('\\', '/')
+    # Ensure the path exists
+    if not os.path.exists(img_path):
+        print(f"Warning: Image file not found: {img_path}")
+        continue
     for matched_imageno, indexvalue in enumerate(top_n_cosine_scores):
         # Create a sub-dictionary for each matched image
         final_images[matched_imageno] = {}
