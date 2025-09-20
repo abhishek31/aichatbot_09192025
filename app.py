@@ -106,12 +106,15 @@ def main():
         st.header("Upload Documents for RAG")
         progress_bar = None
         uploaded_files = st.file_uploader("Choose a file", type=["pdf","csv","jpeg","png"], accept_multiple_files=True)
-        os.makedirs(PDF_FOLDER_PATH, exist_ok=True)
-        if uploaded_file is not None:
-            file_path = os.path.join(PDF_FOLDER_PATH, uploaded_file.name)
-            with open(file_path, "wb") as f:
-                f.write(uploaded_file.getbuffer())
-                st.success(f"File saved to {file_path}")
+        if uploaded_files:
+            for uploaded_file in uploaded_files:
+                file_path = os.path.join(PDF_FOLDER_PATH, uploaded_file.name)
+                try:
+                    with open(file_path, "wb") as f:
+                        f.write(uploaded_file.getbuffer())
+                    st.success(f"File saved to {file_path}")
+                except Exception as e:
+                    st.error(f"Error saving file {uploaded_file.name}: {e}")
         none_state = {'break_now': False}
         none_state['break_now'] = (uploaded_files is None)
         for uploaded_file in uploaded_files:
