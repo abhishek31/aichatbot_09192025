@@ -1,0 +1,12 @@
+pymupdf
+google_cloud_aiplatform
+audio_recorder_streamlit
+numpy
+pandas
+Pillow
+protobuf
+streamlit_extras
+vertexai
+google-auth
+google-cloud-speech
+streamlit==1.35.0
