@@ -1,5 +1,5 @@
 pymupdf
-google_cloud_aiplatform
+google_cloud_aiplatform==1.71.1 protobuf==5.29.5
 audio_recorder_streamlit
 numpy
 pandas
@@ -9,4 +9,4 @@ streamlit_extras
 vertexai
 google-auth
 google-cloud-speech
-streamlit==1.35.0
+streamlit==1.49.1
