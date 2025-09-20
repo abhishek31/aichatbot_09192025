@@ -763,7 +763,7 @@ def get_similar_image_from_query(
     # Ensure the path exists
     if not os.path.exists(img_path):
         print(f"Warning: Image file not found: {img_path}")
-        continue
+        return
     for matched_imageno, indexvalue in enumerate(top_n_cosine_scores):
         # Create a sub-dictionary for each matched image
         final_images[matched_imageno] = {}
