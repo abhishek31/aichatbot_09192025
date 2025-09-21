@@ -1,4 +1,3 @@
-
 import os
 import io
 import time
@@ -756,16 +755,9 @@ def get_similar_image_from_query(
 
     # Create a dictionary to store matched images and their information
     final_images: Dict[int, Dict[str, Any]] = {}
-    # With this cross-platform solution:
-    img_path = image_metadata_df.iloc[indexvalue]["img_path"]
-    # Convert Windows paths to Unix paths
-    img_path = img_path.replace('\\', '/')
-    # Ensure the path exists
-    if not os.path.exists(img_path):
-        print(f"Warning: Image file not found: {img_path}")
-        return
     for matched_imageno, indexvalue in enumerate(top_n_cosine_scores):
-        # Create a sub-dictionary for each matched image
+
+	# Create a sub-dictionary for each matched image
         final_images[matched_imageno] = {}
 
         # Store cosine score
@@ -774,9 +766,15 @@ def get_similar_image_from_query(
         ]
 
         # Load image from file
-        final_images[matched_imageno]["image_object"] = Image.load_from_file(
-            image_metadata_df.iloc[indexvalue]["img_path"]
-        )
+        img_path = image_metadata_df.iloc[indexvalue]["img_path"]
+        img_path = img_path.replace('\\', '/')
+	# Store the processed image path
+        final_images[matched_imageno]["img_path"] = img_path
+        #final_images[matched_imageno]["image_object"] = Image.load_from_file(
+         #   image_metadata_df.iloc[indexvalue]["img_path"]
+        #)
+
+        final_images[matched_imageno]["image_object"] = Image.load_from_file(img_path)
 
         # Add file name
         final_images[matched_imageno]["file_name"] = image_metadata_df.iloc[indexvalue][
@@ -1200,7 +1198,7 @@ def clear_chat_history(chat_history_file):
         del st.session_state.selected_chat
     with open(chat_history_file, 'w') as file:
         json.dump([], file)
-    st.experimental_rerun()
+    st.streamlit.rerun()
 
 def get_base64(bin_file):
     """
