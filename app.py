@@ -41,15 +41,29 @@ IMAGE_TEXT_EXTRACTION_TEMPERATURE = 0.3 # lower means more deterministic and hig
 IMAGE_TEXT_EXTRACTION_MAX_OUTPUT_TOKENS = 2048
 instruction = """Task: Answer the following questions in detail, providing clear reasoning and evidence from the images and text in bullet points.
     Instructions:
-    1. **Analyze:** Carefully examine the provided images and text context. focusing on the process flow diagrams and the descriptions provided. Understand the sequence and purpose of each step.
-    2. **Synthesize:** Integrate information from both the visual and textual elements.
-    3. **Reason:**  Deduce logical connections and inferences to address the question.
-    4. **Respond:** Provide a concise, accurate answer in the following format:
-       * **Question:** [Question]
-       * **Answer:** [Direct response to the question]
-       * **Explanation:** [Bullet-point reasoning steps if applicable]
-       * **Source** [name of the file, page, image from where the information is citied]
-    5. **Ambiguity:** If the context is insufficient to answer, use your general knowledge to provide a helpful response. If you still cannot answer, respond "Not enough context to answer."
+    1. Decide: Is there enough information in the provided images and text to answer the question?
+        If yes, answer using document evidence.
+        If no, answer using your general knowledge.
+	Only respond "Not enough context to answer" if neither the documents nor general knowledge can answer.
+
+    2. Format your response as follows:
+	Question: [Question]
+	Answer: [Direct response to the question]
+	Explanation: [Bullet-point reasoning steps]	
+	Source: [Document name/page/image, or "General knowledge"]
+	Examples:
+	Question: What is the weather in Atlanta?
+	Answer: Atlanta has a humid subtropical climate, with hot summers and mild winters. For current weather, consult a weather service.
+	Explanation: This is based on general knowledge about Atlanta’s climate.
+	Source: source name
+	Question: What is Walmart’s main business?
+	Answer: Walmart operates retail stores including hypermarkets and grocery stores.
+	Explanation: This is stated in the Walmart 10-K report.
+	Source: 10k-Walmart.pdf, Page 1
+	Question: What is the CEO’s favorite color?
+	Answer: Not enough context to answer.
+	Explanation: Neither the documents nor general knowledge provide this information.
+	Source: N/A
     """
 image_description_prompt = """You are a warehouse logistics and supply chain operations expert. You will be provided with various types of images extracted from documents like warehouse standard operating procedures, warehouse product and information process flows, warehouse operational framework, warehouse organizational structure, and more.
 Your task is to generate concise, accurate descriptions of the images without adding any information you are not confident about.
@@ -72,7 +86,61 @@ text_embedding_model = TextEmbeddingModel.from_pretrained(TEXT_EMBEDDING_MODEL)
 # Load multimodal embedding model from pre-trained source
 multimodal_embedding_model = MultiModalEmbeddingModel.from_pretrained(MULTIMODAL_EMBEDDING_MODEL)
 
+# Function to apply custom CSS
+def apply_custom_css():
+        st.markdown("""
+    <style>
+    /* Change chat message text color to white */
+    .stChatMessage {
+        color: white !important;
+	background-color: transparent !important; /* Ensure no background color */
+    }
+    
+    /* Ensure assistant response text is white */
+    .stChatMessage[data-testid="assistant"] {
+        color: white !important;
+	background-color: transparent !important; /* Ensure no background color */	
+    }
+    
+    /* Ensure user message text is white */
+    .stChatMessage[data-testid="user"] {
+        color: white !important;
+	background-color: transparent !important; /* Ensure no background color */
+    }
+    
+    /* Ensure text in chat messages is white */
+    .stChatMessage .stMarkdown {
+        color: white !important;
+	background-color: transparent !important; /* Ensure no background color */
+    }
+    
+    /* Reset other text colors to default */
+    .stApp, .stApp *:not(.stChatMessage):not(.stChatMessage *):not(.stMarkdown) {
+        color: initial !important;
+    }
+    
+    /* Sidebar and other elements */
+    .css-1d391kg, .css-1d391kg * {
+        color: initial !important;
+        background-color: #000000 !important;
+    }
+    
+    /* Specific targeting for uploaded files and chat history */
+    .stylable-container {
+        background-color: #2563eb !important;        /* Slightly lighter black */
+    	border: 1px solid rgba(255, 255, 255, 0.1) !important;  /* Lighter border */
+    	overflow: auto !important;                    /* Keep scrollbars */
+    	white-space: normal !important;               /* Allow text wrapping */
+    	border-radius: 0.5rem !important;            /* Keep rounded corners */
+    	padding: 1rem !important;                     /* Simpler padding */
+    	color: white !important;  
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+
 def main():
+    apply_custom_css()  # Apply custom CSS for white text
     set_background(BACKGROUND_IMAGE_PATH)
     img = replace_color(LOGO_IMAGE_PATH, (0,0,0), (37,39,48))
     st.logo(img)
@@ -141,12 +209,13 @@ def main():
             uploaded_content = text_metadata_df['file_name'].unique()
             with stylable_container(key = 'uploaded_files', css_styles="""
                 {
-                    background-color: #000000;
+                    background-color: #2563eb;
                     border: 1px solid rgba(49, 51, 63, 0.2);
                     overflow: auto;
                     white-space: nowrap;
                     border-radius: 0.5rem;
                     padding: calc(1em - 1px)
+		    color: white !important;	
                 }
                 """):
                 for item in uploaded_content:
@@ -157,12 +226,13 @@ def main():
         if st.session_state.chat_history:
             with stylable_container(key = 'chat_history', css_styles="""
                 {
-                    background-color: #000000;
+                    background-color: #2563eb;
                     border: 1px solid rgba(49, 51, 63, 0.2);
                     overflow: auto;
                     white-space: nowrap;
                     border-radius: 0.5rem;
                     padding: calc(1em - 1px)
+		    color: white !important;	
                 }
                 """):
                 for chat in st.session_state.chat_history:
